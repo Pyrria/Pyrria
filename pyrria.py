@@ -1,21 +1,21 @@
 from twisted.internet import reactor, protocol
 
-
-
-class Echo(protocol.Protocol):
+class Server(protocol.Protocol):
     """This is just about the simplest possible protocol"""
     
     def dataReceived(self, data):
         "As soon as any data is received, write it back."
-        if data[0] == '\x01':
-            print('Got a connect request')
-        #self.transport.write(data)
-
+        cmd = data[5]
+        if cmd == '\x01':
+            print('Got a connect request, accepting')
+            self.transport.write('\x03\x00\x00\x00\x00')
+        elif cmd == '\x02':
+            print('Got disconnect')
 
 def main():
     """This runs the protocol on port 8000"""
     factory = protocol.ServerFactory()
-    factory.protocol = Echo
+    factory.protocol = Server
     reactor.listenTCP(7777, factory)
     reactor.run()
 
