@@ -10,7 +10,7 @@ class Echo(protocol.Protocol):
         if data[0] == '\x01':
             print('Got a connect request')
         #self.transport.write(data)
-
+        print(data)
 
 def main():
     """This runs the protocol on port 8000"""
